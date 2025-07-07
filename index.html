@@ -8,9 +8,78 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Пустая страница</title>
+    <title>Блог</title>
+    <!--
+        Стили для базового оформления блога.
+        Можно заменить или расширить по желанию.
+    -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            border-radius: 8px;
+            padding: 32px 24px 24px 24px;
+        }
+        header {
+            border-bottom: 1px solid #eee;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        .blog-description {
+            color: #666;
+            margin-top: 8px;
+        }
+        .posts {
+            min-height: 200px; /* Место для будущих постов */
+        }
+        .empty-message {
+            color: #aaa;
+            text-align: center;
+            margin-top: 60px;
+        }
+        footer {
+            border-top: 1px solid #eee;
+            margin-top: 40px;
+            padding-top: 16px;
+            color: #888;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <!-- Пустая страница -->
+    <div class="container">
+        <header>
+            <!-- Название блога -->
+            <h1><!-- Здесь напишите название блога --></h1>
+            <!-- Краткое описание блога -->
+            <div class="blog-description"><!-- Здесь напишите краткое описание блога --></div>
+        </header>
+        <main>
+            <section class="posts">
+                <!--
+                    Здесь будут отображаться посты блога.
+                    Пока постов нет, выводится сообщение ниже.
+                -->
+                <div class="empty-message">Постов пока нет.</div>
+            </section>
+        </main>
+        <footer>
+            <!-- Здесь можно указать информацию об авторе или копирайт -->
+            &copy; <!-- Год и имя автора -->
+        </footer>
+    </div>
 </body>
 </html>
