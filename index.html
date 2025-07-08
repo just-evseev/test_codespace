@@ -172,15 +172,10 @@
             .then(response => response.json())
             .then(author => {
                 const about = document.querySelector('.about-author .author-info');
-                let html = `<strong>Опыт работы:</strong><br><br>`;
+                let html = '';
                 author.experience.forEach(exp => {
                     html += `<b>${exp.company}</b> (${exp.location})<br>`;
-                    html += `<span>${exp.role} — ${exp.period}</span><br>`;
-                    html += '<ul>';
-                    exp.details.forEach(detail => {
-                        html += `<li>${detail}</li>`;
-                    });
-                    html += '</ul>';
+                    html += `<span>${exp.role} — ${exp.period}</span><br><br>`;
                 });
                 about.innerHTML = html;
             });
@@ -196,18 +191,18 @@
             <div class="blog-description">Заметки, советы и личный опыт о том, как просто и удобно писать код с любых устройств.</div>
         </header>
         <main>
-            <!-- Секция с последними 3 постами -->
-            <section class="latest-posts">
-                <h2>Последние статьи</h2>
-                <div class="posts">
-                    <!-- Статьи будут подгружаться из posts.json -->
-                </div>
-            </section>
             <!-- Секция об авторе -->
             <section class="about-author">
                 <h2>Об авторе</h2>
                 <div class="author-info">
                     <!-- Данные об авторе будут подгружаться из author.json -->
+                </div>
+            </section>
+            <!-- Секция с последними 3 постами -->
+            <section class="latest-posts">
+                <h2>Последние статьи</h2>
+                <div class="posts">
+                    <!-- Статьи будут подгружаться из posts.json -->
                 </div>
             </section>
         </main>
