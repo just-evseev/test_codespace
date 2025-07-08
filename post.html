@@ -79,48 +79,6 @@
         }
     }
     </script>
-    <script>
-    // --- АНИМАЦИЯ ПЕРЕТЕКАНИЯ ЗАГОЛОВКА ---
-    document.addEventListener('DOMContentLoaded', function() {
-        const animData = sessionStorage.getItem('postTitleAnim');
-        if (animData) {
-            const data = JSON.parse(animData);
-            const realTitle = document.querySelector('h1');
-            if (realTitle) {
-                realTitle.style.visibility = 'hidden';
-                const rect = realTitle.getBoundingClientRect();
-                const scrollY = window.scrollY;
-                const animTitle = document.createElement('h2');
-                animTitle.textContent = data.text;
-                animTitle.style.position = 'absolute';
-                animTitle.style.left = data.left + 'px';
-                animTitle.style.top = data.top + 'px';
-                animTitle.style.width = data.width + 'px';
-                animTitle.style.fontSize = data.fontSize;
-                animTitle.style.margin = 0;
-                animTitle.style.zIndex = 1000;
-                animTitle.style.background = 'transparent';
-                animTitle.style.color = getComputedStyle(realTitle).color;
-                animTitle.style.transition = 'all 0.6s cubic-bezier(.4,1.6,.4,1)';
-                animTitle.style.pointerEvents = 'none';
-                document.body.appendChild(animTitle);
-
-                setTimeout(() => {
-                    animTitle.style.left = rect.left + 'px';
-                    animTitle.style.top = (rect.top + scrollY) + 'px';
-                    animTitle.style.width = rect.width + 'px';
-                    animTitle.style.fontSize = getComputedStyle(realTitle).fontSize;
-                }, 20);
-
-                setTimeout(() => {
-                    realTitle.style.visibility = '';
-                    animTitle.remove();
-                    sessionStorage.removeItem('postTitleAnim');
-                }, 650);
-            }
-        }
-    });
-    </script>
 </head>
 <body>
     <div class="container">
