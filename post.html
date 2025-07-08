@@ -42,40 +42,16 @@
                 const tagsDiv = document.querySelector('.post-tags');
                 tagsDiv.innerHTML = post.tags.map(tag => `<span class='tag'>${tag}</span>`).join(' ');
                 // Основной текст поста
-                renderPostContent(postId);
+                renderPostContent(post);
             });
     });
-    // Вынесите содержимое поста в отдельную функцию для каждого id
-    function renderPostContent(postId) {
+    // Теперь функция принимает объект поста
+    function renderPostContent(post) {
         const contentDiv = document.querySelector('.post-content');
-        if (postId === 'post-codespace') {
-            contentDiv.innerHTML = `
-                <p>Современные облачные инструменты позволяют писать код буквально с любого устройства. Например, с помощью <b>GitHub Codespace</b> вы можете открыть полноценную среду разработки прямо в браузере на iPad.</p>
-                <ul>
-                    <li>Не нужно ничего устанавливать — всё работает в облаке.</li>
-                    <li>Доступны VS Code, терминал, git и даже запуск серверов.</li>
-                    <li>Можно быстро переключаться между проектами и устройствами.</li>
-                </ul>
-                <p>Достаточно зайти на <a href='https://github.com/codespaces' target='_blank'>github.com/codespaces</a>, выбрать репозиторий и начать работу. Это отличный способ программировать в дороге, на отдыхе или просто с планшета.</p>
-            `;
-        } else if (postId === 'post-swift-concurrency') {
-            contentDiv.innerHTML = `
-                <p>С выходом Swift 5.5 в языке появилась современная система конкурентности — <b>Swift Concurrency</b>. Теперь писать асинхронный код стало проще и безопаснее.</p>
-                <ul>
-                    <li>async/await — лаконичный синтаксис для асинхронных функций</li>
-                    <li>Structured Concurrency — задачи группируются и управляются автоматически</li>
-                    <li>Actors — безопасная работа с состоянием в многопоточной среде</li>
-                </ul>
-                <p>Пример асинхронной функции:</p>
-                <pre><code>func fetchData() async throws -> Data {
-    let url = URL(string: "https://example.com")!
-    let (data, _) = try await URLSession.shared.data(from: url)
-    return data
-}</code></pre>
-                <p>Благодаря новым возможностям, код становится чище, а ошибки гонки — реже. Если вы пишете под iOS или macOS, обязательно попробуйте Swift Concurrency в своих проектах!</p>
-            `;
+        if (post.content) {
+            contentDiv.innerHTML = post.content;
         } else {
-            contentDiv.innerHTML = '<p>Пост не найден.</p>';
+            contentDiv.innerHTML = '<p>Пост не найден или не содержит текст.</p>';
         }
     }
     </script>
