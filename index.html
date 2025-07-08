@@ -97,6 +97,28 @@
             background: #2a3550;
             color: #8cb4ff;
         }
+        .latest-posts {
+            margin-bottom: 48px;
+        }
+        .latest-posts h2 {
+            font-size: 1.5rem;
+            margin-bottom: 18px;
+        }
+        .about-author {
+            background: var(--container-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 28px 20px;
+            margin-bottom: 32px;
+        }
+        .about-author h2 {
+            font-size: 1.4rem;
+            margin-top: 0;
+        }
+        .author-info {
+            color: var(--desc);
+            font-size: 1.08rem;
+        }
     </style>
     <script>
     // Тема определяется автоматически по системным настройкам пользователя
@@ -119,13 +141,13 @@
             });
         }
 
-        // Загрузка и отображение статей из posts.json
+        // Загрузка и отображение только последних 3 статей
         fetch('posts.json')
             .then(response => response.json())
             .then(posts => {
                 const postsSection = document.querySelector('.posts');
                 postsSection.innerHTML = '';
-                posts.forEach(post => {
+                posts.slice(0, 3).forEach(post => {
                     const article = document.createElement('article');
                     article.className = 'post';
                     article.innerHTML = `
@@ -152,8 +174,44 @@
             <div class="blog-description">Заметки, советы и личный опыт о том, как просто и удобно писать код с любых устройств.</div>
         </header>
         <main>
-            <section class="posts">
-                <!-- Статьи будут подгружаться из posts.json -->
+            <!-- Секция с последними 3 постами -->
+            <section class="latest-posts">
+                <h2>Последние статьи</h2>
+                <div class="posts">
+                    <!-- Статьи будут подгружаться из posts.json -->
+                </div>
+            </section>
+            <!-- Секция об авторе -->
+            <section class="about-author">
+                <h2>Об авторе</h2>
+                <div class="author-info">
+                    <strong>Опыт работы:</strong><br><br>
+                    <b>Yandex</b> (Белград, Сербия)<br>
+                    <span>Senior iOS Developer — Январь 2023 — настоящее время</span><br>
+                    <ul>
+                        <li>Руководил командой и разработал главный экран суперприложения</li>
+                        <li>Увеличил видимость рекламы в приложении с 20% до 80%</li>
+                        <li>Разработал систему отчётности по доставляемости</li>
+                        <li>Организовал обучающие программы: Летняя школа мобильной разработки, курс в Университете Сириус</li>
+                        <li>Techlead, Swift и ещё 7+ навыков</li>
+                    </ul>
+                    <b>Yandex</b> (Москва, Россия)<br>
+                    <span>iOS Developer — Декабрь 2020 — Январь 2023</span><br>
+                    <ul>
+                        <li>Улучшил стабильность геолокации и разработал новый продукт для шаттлов</li>
+                        <li>Организовал школы iOS-разработки, выпускники которых получили офферы</li>
+                        <li>iOS, Swift и ещё 3+ навыка</li>
+                    </ul>
+                    <b>Pyrus</b> (Москва, Россия)<br>
+                    <span>iOS Developer — Март 2019 — Декабрь 2020</span><br>
+                    <ul>
+                        <li>Реализовал закреплённые задачи и rich text-комментарии</li>
+                        <li>Оптимизировал производительность текста и аватаров</li>
+                        <li>Перевёл проект с Objective-C на Swift, улучшил хранилище для мультиаккаунтов</li>
+                        <li>Настроил CI/CD</li>
+                        <li>Swift, Objective-C и ещё 2+ навыка</li>
+                    </ul>
+                </div>
             </section>
         </main>
         <footer>
