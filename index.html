@@ -162,6 +162,24 @@
                     postsSection.appendChild(article);
                 });
             });
+
+        // Загрузка информации об авторе из author.json
+        fetch('author.json')
+            .then(response => response.json())
+            .then(author => {
+                const about = document.querySelector('.about-author .author-info');
+                let html = `<strong>Опыт работы:</strong><br><br>`;
+                author.experience.forEach(exp => {
+                    html += `<b>${exp.company}</b> (${exp.location})<br>`;
+                    html += `<span>${exp.role} — ${exp.period}</span><br>`;
+                    html += '<ul>';
+                    exp.details.forEach(detail => {
+                        html += `<li>${detail}</li>`;
+                    });
+                    html += '</ul>';
+                });
+                about.innerHTML = html;
+            });
     });
     </script>
 </head>
@@ -185,32 +203,7 @@
             <section class="about-author">
                 <h2>Об авторе</h2>
                 <div class="author-info">
-                    <strong>Опыт работы:</strong><br><br>
-                    <b>Yandex</b> (Белград, Сербия)<br>
-                    <span>Senior iOS Developer — Январь 2023 — настоящее время</span><br>
-                    <ul>
-                        <li>Руководил командой и разработал главный экран суперприложения</li>
-                        <li>Увеличил видимость рекламы в приложении с 20% до 80%</li>
-                        <li>Разработал систему отчётности по доставляемости</li>
-                        <li>Организовал обучающие программы: Летняя школа мобильной разработки, курс в Университете Сириус</li>
-                        <li>Techlead, Swift и ещё 7+ навыков</li>
-                    </ul>
-                    <b>Yandex</b> (Москва, Россия)<br>
-                    <span>iOS Developer — Декабрь 2020 — Январь 2023</span><br>
-                    <ul>
-                        <li>Улучшил стабильность геолокации и разработал новый продукт для шаттлов</li>
-                        <li>Организовал школы iOS-разработки, выпускники которых получили офферы</li>
-                        <li>iOS, Swift и ещё 3+ навыка</li>
-                    </ul>
-                    <b>Pyrus</b> (Москва, Россия)<br>
-                    <span>iOS Developer — Март 2019 — Декабрь 2020</span><br>
-                    <ul>
-                        <li>Реализовал закреплённые задачи и rich text-комментарии</li>
-                        <li>Оптимизировал производительность текста и аватаров</li>
-                        <li>Перевёл проект с Objective-C на Swift, улучшил хранилище для мультиаккаунтов</li>
-                        <li>Настроил CI/CD</li>
-                        <li>Swift, Objective-C и ещё 2+ навыка</li>
-                    </ul>
+                    <!-- Данные об авторе будут подгружаться из author.json -->
                 </div>
             </section>
         </main>
