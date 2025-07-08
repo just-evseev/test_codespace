@@ -123,6 +123,44 @@
             color: var(--desc);
             font-size: 1.08rem;
         }
+        /* Анимация раскрытия поста */
+        .post-animate-enter {
+            position: fixed;
+            z-index: 1000;
+            background: var(--container-bg);
+            box-shadow: var(--shadow);
+            border-radius: 8px;
+            left: 0; top: 0;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s cubic-bezier(.4,1.6,.4,1), opacity 0.3s;
+        }
+        .post-animate-enter.active {
+            left: 0; top: 0;
+            width: 100vw;
+            height: 100vh;
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .post-animate-title {
+            position: absolute;
+            left: var(--title-x, 0px);
+            top: var(--title-y, 0px);
+            width: var(--title-width, 100%);
+            font-size: var(--title-font, 2.2rem);
+            margin: 0;
+            transition: all 0.5s cubic-bezier(.4,1.6,.4,1);
+        }
+        .post-animate-title.final {
+            position: static;
+            width: 100%;
+            font-size: 2.2rem;
+            margin-top: 0;
+        }
     </style>
     <script>
     // Тема определяется автоматически по системным настройкам пользователя
@@ -179,7 +217,48 @@
                 });
                 about.innerHTML = html;
             });
-    });
+
+        // Анимация открытия поста
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.posts .post a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Только для перехода по заголовку или "Читать далее"
+                    if (!link.closest('h2') && !link.textContent.includes('Читать далее')) return;
+                    e.preventDefault();
+                    const postEl = link.closest('.post');
+                    const rect = postEl.getBoundingClientRect();
+                    const titleEl = postEl.querySelector('h2');
+                    const titleRect = titleEl.getBoundingClientRect();
+                    // Создаём анимируемый контейнер
+                    const anim = document.createElement('div');
+                    anim.className = 'post-animate-enter';
+                    anim.style.left = rect.left + 'px';
+                    anim.style.top = rect.top + 'px';
+                    anim.style.width = rect.width + 'px';
+                    anim.style.height = rect.height + 'px';
+                    anim.style.opacity = 1;
+                    // Копируем заголовок
+                    const animTitle = document.createElement('h2');
+                    animTitle.className = 'post-animate-title';
+                    animTitle.textContent = titleEl.textContent;
+                    animTitle.style.left = (titleRect.left - rect.left) + 'px';
+                    animTitle.style.top = (titleRect.top - rect.top) + 'px';
+                    animTitle.style.width = titleRect.width + 'px';
+                    animTitle.style.fontSize = window.getComputedStyle(titleEl).fontSize;
+                    anim.appendChild(animTitle);
+                    document.body.appendChild(anim);
+                    // Запускаем анимацию
+                    setTimeout(() => {
+                        anim.classList.add('active');
+                        animTitle.classList.add('final');
+                    }, 10);
+                    // После анимации — переход
+                    setTimeout(() => {
+                        window.location = link.href;
+                    }, 600);
+                });
+            });
+        });
     </script>
 </head>
 <body>
