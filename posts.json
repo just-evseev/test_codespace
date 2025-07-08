@@ -1,0 +1,18 @@
+[
+  {
+    "id": "post-codespace",
+    "title": "Программирование на iPad через GitHub Codespace",
+    "date": "07.07.2025",
+    "tags": ["iPad", "Облачная разработка"],
+    "preview": "Современные облачные инструменты позволяют писать код буквально с любого устройства. Например, с помощью GitHub Codespace вы можете открыть полноценную среду разработки прямо в браузере на iPad.",
+    "url": "post-codespace.html"
+  },
+  {
+    "id": "post-swift-concurrency",
+    "title": "Swift Concurrency: просто о современном асинхронном коде",
+    "date": "08.07.2025",
+    "tags": ["Swift", "Concurrency"],
+    "preview": "С выходом Swift 5.5 появилась современная система конкурентности — Swift Concurrency. Теперь писать асинхронный код стало проще и безопаснее.",
+    "url": "post-swift-concurrency.html"
+  }
+]
