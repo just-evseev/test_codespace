@@ -165,21 +165,9 @@
                     `;
                     postsSection.appendChild(article);
                 });
-                // После отрисовки постов навешиваем анимацию
-                addPostOpenAnimation();
+                // После отрисовки постов навешиваем обработчик перехода
+                addPostOpenHandler();
             });
-
-        // --- ВОССТАНОВЛЕНИЕ ПОЗИЦИИ СКРОЛЛА ---
-        if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname === '') {
-            const savedScroll = sessionStorage.getItem('scrollPosition');
-            if (savedScroll !== null) {
-                // В Safari scrollTo может сработать до полной отрисовки DOM, поэтому используем setTimeout
-                setTimeout(() => {
-                    window.scrollTo(0, parseInt(savedScroll, 10));
-                    sessionStorage.removeItem('scrollPosition');
-                }, 0);
-            }
-        }
 
         // Загрузка информации об авторе из author.json
         fetch('author.json')
@@ -194,16 +182,13 @@
                 about.innerHTML = html;
             });
 
-        // Анимация открытия поста
-        function addPostOpenAnimation() {
+        // Обработчик перехода к посту без анимации
+        function addPostOpenHandler() {
             document.querySelectorAll('.posts .post a').forEach(link => {
                 link.addEventListener('click', function(e) {
                     if (!link.closest('h2') && !link.textContent.includes('Читать далее')) return;
                     sessionStorage.setItem('scrollPosition', window.scrollY);
                     // Без анимации, просто переход
-                    // e.preventDefault(); window.location = link.href;
-                    // Для совместимости с восстановлением скролла:
-                    // Если нужно предотвратить дефолт, раскомментируйте две строки выше
                 });
             });
         }

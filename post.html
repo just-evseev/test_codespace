@@ -42,18 +42,9 @@
                 const tagsDiv = document.querySelector('.post-tags');
                 tagsDiv.innerHTML = post.tags.map(tag => `<span class='tag'>${tag}</span>`).join(' ');
                 // Основной текст поста
-                renderPostContent(post);
+                document.querySelector('.post-content').innerHTML = post.content;
             });
     });
-    // Теперь функция принимает объект поста
-    function renderPostContent(post) {
-        const contentDiv = document.querySelector('.post-content');
-        if (post.content) {
-            contentDiv.innerHTML = post.content;
-        } else {
-            contentDiv.innerHTML = '<p>Пост не найден или не содержит текст.</p>';
-        }
-    }
     </script>
 </head>
 <body>
