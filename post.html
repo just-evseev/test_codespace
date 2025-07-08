@@ -1,0 +1,92 @@
+<!-- Универсальный экран для отображения полного поста -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Пост блога</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f9f9f9; color: #222; margin: 0; }
+        .container { max-width: 800px; margin: 40px auto; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.07); border-radius: 8px; padding: 32px 24px 24px 24px; }
+        h1 { font-size: 2.2rem; margin-top: 0; }
+        .post-meta { color: #888; font-size: 0.98rem; margin-bottom: 24px; }
+        .post-tags { margin-bottom: 18px; }
+        .tag { display: inline-block; background: #e0e7ef; color: #3366cc; border-radius: 4px; font-size: 0.92rem; padding: 2px 10px; margin-right: 6px; margin-bottom: 2px; }
+        a { color: #3366cc; }
+        .back-link { display: inline-block; margin-bottom: 24px; color: #3366cc; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 6px; overflow-x: auto; }
+    </style>
+    <script>
+    // Универсальный рендеринг поста по id из query-параметра
+    function getPostId() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('id');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const postId = getPostId();
+        if (!postId) {
+            document.querySelector('.container').innerHTML = '<p>Пост не найден.</p>';
+            return;
+        }
+        fetch('posts.json')
+            .then(response => response.json())
+            .then(posts => {
+                const post = posts.find(p => p.id === postId);
+                if (!post) {
+                    document.querySelector('.container').innerHTML = '<p>Пост не найден.</p>';
+                    return;
+                }
+                document.title = post.title;
+                document.querySelector('h1').textContent = post.title;
+                document.querySelector('.post-meta').textContent = post.date;
+                const tagsDiv = document.querySelector('.post-tags');
+                tagsDiv.innerHTML = post.tags.map(tag => `<span class='tag'>${tag}</span>`).join(' ');
+                // Основной текст поста
+                renderPostContent(postId);
+            });
+    });
+    // Вынесите содержимое поста в отдельную функцию для каждого id
+    function renderPostContent(postId) {
+        const contentDiv = document.querySelector('.post-content');
+        if (postId === 'post-codespace') {
+            contentDiv.innerHTML = `
+                <p>Современные облачные инструменты позволяют писать код буквально с любого устройства. Например, с помощью <b>GitHub Codespace</b> вы можете открыть полноценную среду разработки прямо в браузере на iPad.</p>
+                <ul>
+                    <li>Не нужно ничего устанавливать — всё работает в облаке.</li>
+                    <li>Доступны VS Code, терминал, git и даже запуск серверов.</li>
+                    <li>Можно быстро переключаться между проектами и устройствами.</li>
+                </ul>
+                <p>Достаточно зайти на <a href='https://github.com/codespaces' target='_blank'>github.com/codespaces</a>, выбрать репозиторий и начать работу. Это отличный способ программировать в дороге, на отдыхе или просто с планшета.</p>
+            `;
+        } else if (postId === 'post-swift-concurrency') {
+            contentDiv.innerHTML = `
+                <p>С выходом Swift 5.5 в языке появилась современная система конкурентности — <b>Swift Concurrency</b>. Теперь писать асинхронный код стало проще и безопаснее.</p>
+                <ul>
+                    <li>async/await — лаконичный синтаксис для асинхронных функций</li>
+                    <li>Structured Concurrency — задачи группируются и управляются автоматически</li>
+                    <li>Actors — безопасная работа с состоянием в многопоточной среде</li>
+                </ul>
+                <p>Пример асинхронной функции:</p>
+                <pre><code>func fetchData() async throws -> Data {
+    let url = URL(string: "https://example.com")!
+    let (data, _) = try await URLSession.shared.data(from: url)
+    return data
+}</code></pre>
+                <p>Благодаря новым возможностям, код становится чище, а ошибки гонки — реже. Если вы пишете под iOS или macOS, обязательно попробуйте Swift Concurrency в своих проектах!</p>
+            `;
+        } else {
+            contentDiv.innerHTML = '<p>Пост не найден.</p>';
+        }
+    }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Назад к блогу</a>
+        <h1></h1>
+        <div class="post-meta"></div>
+        <div class="post-tags"></div>
+        <div class="post-content"></div>
+    </div>
+</body>
+</html>
