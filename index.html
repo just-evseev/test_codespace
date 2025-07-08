@@ -203,6 +203,8 @@
                     `;
                     postsSection.appendChild(article);
                 });
+                // После отрисовки постов навешиваем анимацию
+                addPostOpenAnimation();
             });
 
         // Загрузка информации об авторе из author.json
@@ -219,7 +221,7 @@
             });
 
         // Анимация открытия поста
-        document.addEventListener('DOMContentLoaded', function() {
+        function addPostOpenAnimation() {
             document.querySelectorAll('.posts .post a').forEach(link => {
                 link.addEventListener('click', function(e) {
                     // Только для перехода по заголовку или "Читать далее"
@@ -258,7 +260,8 @@
                     }, 600);
                 });
             });
-        });
+        }
+    });
     </script>
 </head>
 <body>
