@@ -173,8 +173,11 @@
         if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname === '') {
             const savedScroll = sessionStorage.getItem('scrollPosition');
             if (savedScroll !== null) {
-                window.scrollTo(0, parseInt(savedScroll, 10));
-                sessionStorage.removeItem('scrollPosition');
+                // В Safari scrollTo может сработать до полной отрисовки DOM, поэтому используем setTimeout
+                setTimeout(() => {
+                    window.scrollTo(0, parseInt(savedScroll, 10));
+                    sessionStorage.removeItem('scrollPosition');
+                }, 0);
             }
         }
 
