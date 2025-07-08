@@ -237,11 +237,22 @@
                     if (!link.closest('h2') && !link.textContent.includes('Читать далее')) return;
                     // --- СОХРАНЕНИЕ ПОЗИЦИИ СКРОЛЛА ---
                     sessionStorage.setItem('scrollPosition', window.scrollY);
-                    e.preventDefault();
+                    // --- СОХРАНЕНИЕ ДАННЫХ ДЛЯ АНИМАЦИИ ---
                     const postEl = link.closest('.post');
-                    const rect = postEl.getBoundingClientRect();
                     const titleEl = postEl.querySelector('h2');
                     const titleRect = titleEl.getBoundingClientRect();
+                    const scrollY = window.scrollY;
+                    sessionStorage.setItem('postTitleAnim', JSON.stringify({
+                        text: titleEl.textContent,
+                        left: titleRect.left,
+                        top: titleRect.top + scrollY,
+                        width: titleRect.width,
+                        height: titleRect.height,
+                        fontSize: window.getComputedStyle(titleEl).fontSize
+                    }));
+                    e.preventDefault();
+                    // ...существующая анимация (можно оставить для плавности)...
+                    const rect = postEl.getBoundingClientRect();
                     // Создаём анимируемый контейнер
                     const anim = document.createElement('div');
                     anim.className = 'post-animate-enter';
