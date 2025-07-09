@@ -362,7 +362,7 @@
                     let start = exp.start;
                     let end = exp.end === null ? '✦' : exp.end;
                     years = `${start} — ${end}`;
-                    html += `<div class="exp-item"><span class="exp-years">${years}</span> <span class="exp-title">${exp.title} @ ${exp.company}</span></div>`;
+                    html += `<div class="exp-item"><span class="exp-years">${years}</span><br><span class="exp-title">${exp.title} @ ${exp.company}</span></div>`;
                 });
                 html += '</div>';
                 about.innerHTML = html;
