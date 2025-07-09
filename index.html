@@ -417,20 +417,11 @@
                 html += '</div>';
                 about.innerHTML = html;
                 // About
-                if (author.about) {
-                    document.querySelector('.about-text').textContent = author.about;
-                }
-                // Principles (заглушка, если нет в author.json)
-                const principles = author.principles || [
-                    'Делать сложное простым',
-                    'Учиться и делиться опытом',
-                    'Писать код, который хочется читать',
-                    'Думать о пользователе',
-                    'Быть честным с собой и командой'
-                ];
+                document.querySelector('.about-text').textContent = author.about || '';
+                // Principles
                 const ul = document.querySelector('.principles-list');
                 ul.innerHTML = '';
-                principles.forEach(p => {
+                (author.principles || []).forEach(p => {
                     const li = document.createElement('li');
                     li.textContent = p;
                     ul.appendChild(li);
