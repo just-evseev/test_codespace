@@ -123,6 +123,47 @@
             color: var(--desc);
             font-size: 1.08rem;
         }
+        .tags-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 8px;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+            scrollbar-width: thin;
+        }
+        .tag-btn {
+            background: #e0e7ef;
+            color: #3366cc;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            padding: 4px 14px;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+            margin-bottom: 2px;
+            white-space: nowrap;
+        }
+        .tag-btn.active {
+            background: #3366cc;
+            color: #fff;
+        }
+        .tag-btn.reset-btn {
+            background: #eee;
+            color: #888;
+            margin-left: 12px;
+        }
+        body.dark-theme .tag-btn {
+            background: #2a3550;
+            color: #8cb4ff;
+        }
+        body.dark-theme .tag-btn.active {
+            background: #8cb4ff;
+            color: #23272a;
+        }
+        body.dark-theme .tag-btn.reset-btn {
+            background: #333;
+            color: #aaa;
+        }
     </style>
     <script>
     // Тема определяется автоматически по системным настройкам пользователя
@@ -146,28 +187,69 @@
         }
 
         // Загрузка и отображение только последних 3 статей
+        let allPosts = [];
+        let currentTag = null;
+        const postsSection = document.querySelector('.posts');
+        const tagsContainer = document.createElement('div');
+        tagsContainer.className = 'tags-scroll';
+        // Вставляем контейнер тегов над заголовком "Последние статьи"
+        document.querySelector('.latest-posts').insertBefore(tagsContainer, document.querySelector('.latest-posts h2'));
+
         fetch('posts.json')
             .then(response => response.json())
             .then(posts => {
-                const postsSection = document.querySelector('.posts');
-                postsSection.innerHTML = '';
-                posts.slice(0, 3).forEach(post => {
-                    const article = document.createElement('article');
-                    article.className = 'post';
-                    article.innerHTML = `
-                        <h2><a href="post.html?id=${post.id}" style="color:inherit;text-decoration:none;">${post.title}</a></h2>
-                        <div class="post-meta">${post.date}</div>
-                        <div class="post-tags">
-                            ${post.tags.map(tag => `<span class='tag'>${tag}</span>`).join(' ')}
-                        </div>
-                        <p>${post.preview}</p>
-                        <a href="post.html?id=${post.id}">Читать далее…</a>
-                    `;
-                    postsSection.appendChild(article);
-                });
-                // После отрисовки постов навешиваем обработчик перехода
-                addPostOpenHandler();
+                allPosts = posts;
+                renderTags(posts);
+                renderPosts(posts);
             });
+
+        function renderTags(posts) {
+            // Собираем уникальные теги
+            const tags = Array.from(new Set(posts.flatMap(post => post.tags)));
+            tagsContainer.innerHTML = '';
+            tags.forEach(tag => {
+                const tagBtn = document.createElement('button');
+                tagBtn.className = 'tag-btn';
+                tagBtn.textContent = tag;
+                tagBtn.onclick = () => {
+                    currentTag = tag;
+                    renderPosts(allPosts.filter(post => post.tags.includes(tag)));
+                    renderTags(allPosts); // для подсветки выбранного
+                };
+                if (currentTag === tag) tagBtn.classList.add('active');
+                tagsContainer.appendChild(tagBtn);
+            });
+            if (currentTag) {
+                const resetBtn = document.createElement('button');
+                resetBtn.className = 'tag-btn reset-btn';
+                resetBtn.textContent = 'Сбросить фильтр';
+                resetBtn.onclick = () => {
+                    currentTag = null;
+                    renderPosts(allPosts);
+                    renderTags(allPosts);
+                };
+                tagsContainer.appendChild(resetBtn);
+            }
+        }
+
+        function renderPosts(posts) {
+            postsSection.innerHTML = '';
+            posts.slice(0, 3).forEach(post => {
+                const article = document.createElement('article');
+                article.className = 'post';
+                article.innerHTML = `
+                    <h2><a href="post.html?id=${post.id}" style="color:inherit;text-decoration:none;">${post.title}</a></h2>
+                    <div class="post-meta">${post.date}</div>
+                    <div class="post-tags">
+                        ${post.tags.map(tag => `<span class='tag'>${tag}</span>`).join(' ')}
+                    </div>
+                    <p>${post.preview}</p>
+                    <a href="post.html?id=${post.id}">Читать далее…</a>
+                `;
+                postsSection.appendChild(article);
+            });
+            addPostOpenHandler();
+        }
 
         // Загрузка информации об авторе из author.json
         fetch('author.json')
