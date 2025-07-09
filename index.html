@@ -244,6 +244,43 @@
                 height: 160px;
             }
         }
+        .about-author-wrapper {
+            display: flex;
+            gap: 32px;
+        }
+        @media (max-width: 900px) {
+            .about-author-wrapper {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+        .about-author, .about-side {
+            flex: 1;
+            min-width: 0;
+        }
+        .about-side {
+            background: var(--container-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 28px 20px;
+            margin-bottom: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .about-side h3 {
+            margin-top: 0;
+            font-size: 1.15rem;
+        }
+        .about-side ul {
+            margin: 0 0 0 18px;
+            padding: 0;
+        }
+        .about-side li {
+            margin-bottom: 8px;
+            color: var(--desc);
+            font-size: 1.04rem;
+        }
     </style>
     <script>
     // Тема определяется автоматически по системным настройкам пользователя
@@ -379,6 +416,25 @@
                 });
                 html += '</div>';
                 about.innerHTML = html;
+                // About
+                if (author.about) {
+                    document.querySelector('.about-text').textContent = author.about;
+                }
+                // Principles (заглушка, если нет в author.json)
+                const principles = author.principles || [
+                    'Делать сложное простым',
+                    'Учиться и делиться опытом',
+                    'Писать код, который хочется читать',
+                    'Думать о пользователе',
+                    'Быть честным с собой и командой'
+                ];
+                const ul = document.querySelector('.principles-list');
+                ul.innerHTML = '';
+                principles.forEach(p => {
+                    const li = document.createElement('li');
+                    li.textContent = p;
+                    ul.appendChild(li);
+                });
             });
 
         // Обработчик перехода к посту без анимации
@@ -403,13 +459,23 @@
             <div class="blog-description">Заметки, советы и личный опыт о том, как просто и удобно писать код с любых устройств.</div>
         </header>
         <main>
-            <!-- Секция об авторе -->
-            <section class="about-author">
-                <h2>Об авторе</h2>
-                <div class="author-info">
-                    <!-- Данные об авторе будут подгружаться из author.json -->
-                </div>
-            </section>
+            <div class="about-author-wrapper">
+                <section class="about-author">
+                    <div class="author-info">
+                        <!-- Данные об авторе будут подгружаться из author.json -->
+                    </div>
+                </section>
+                <aside class="about-side">
+                    <div class="about-block">
+                        <h3>About</h3>
+                        <div class="about-text"></div>
+                    </div>
+                    <div class="principles-block">
+                        <h3>Principles</h3>
+                        <ul class="principles-list"></ul>
+                    </div>
+                </aside>
+            </div>
             <!-- Секция с последними 3 постами -->
             <section class="latest-posts">
                 <h2>Последние статьи</h2>
